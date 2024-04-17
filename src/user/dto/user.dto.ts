@@ -2,7 +2,7 @@ import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validat
 import { UserRole } from "../schema/user.schema";
 
 // Dto para uso en validaciones de campos al crear un nuevo user
-export class CreateUserDto{
+export class UserDto{
 
     @IsNotEmpty()
     @IsString()
