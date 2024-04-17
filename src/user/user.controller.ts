@@ -1,13 +1,12 @@
-import { Controller, Get } from "@nestjs/common";
+import { Body, Controller, Post } from '@nestjs/common';
+import { UserService } from './user.service';
 
-@Controller()
-export class UserController{
+@Controller('/user')
+export class UserController {
+    constructor(private userService: UserService){}
 
-    @Get('/users')
-    getAllUsers(){
-        /**
-         * Aquí puedo incluir cualquier tipo de lógica como conexiones a bd o peticiones a otras API
-         */
-        return 'Lista de usuarios'
+    @Post('/create')
+    async create(@Body() createUser: any){
+        return this.userService.create(createUser);
     }
 }
