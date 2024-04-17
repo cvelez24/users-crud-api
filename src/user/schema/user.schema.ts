@@ -6,7 +6,7 @@ export enum UserRole  {
     COMMON_USER = 'COMMON_USER',
     GUEST = 'GUEST'
 }
-
+// Modelo de usuario con sus respectivas propiedades
 @Schema()
 export class User {
 
@@ -26,4 +26,5 @@ export class User {
     role: UserRole;
 }
 
+// Define la creación del modelo en la base de datos
 export const UserSchema = SchemaFactory.createForClass(User);
