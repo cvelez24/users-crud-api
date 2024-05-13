@@ -1,16 +1,17 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
+export type UserRoles = 'ADMIN' | 'COMMON_USER' | 'GUEST';
 // Define el rol del usuario
-export enum UserRole  {
+export enum UserRole {
     ADMIN = 'ADMIN',
     COMMON_USER = 'COMMON_USER',
     GUEST = 'GUEST'
 }
 // Modelo de usuario con sus respectivas propiedades
-@Schema()
-export class User {
+@Schema({})
+export class User extends Document {
 
-    @Prop()
+    @Prop({ required: true })
     name: string;
 
     @Prop()
@@ -22,9 +23,12 @@ export class User {
     @Prop()
     phone: string;
 
-    @Prop({ default: UserRole.GUEST })
+    @Prop({
+        default: UserRole.GUEST,
+        required: true
+    })
     role: UserRole;
 }
 
 // Define la creación del modelo en la base de datos
-export const UserSchema = SchemaFactory.createForClass(User);
+export const userSchema = SchemaFactory.createForClass(User);

@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './schema/user.schema';
+import { User } from './schemas/user.schema';
 import { Model } from 'mongoose';
-import { UserDto } from './dto/user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -10,26 +11,25 @@ export class UserService {
     constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
     // Método para crear un nuevo usuario
-    async create(user: UserDto) {
-        const createdUser = new this.userModel(user);
-        return createdUser.save();
+    async create(user: CreateUserDto) {
+        return this.userModel.create(user); 
     }
 
-    async update(id: string, user: UserDto){
+    async update(id: string, user: UpdateUserDto){
         return this.userModel.findByIdAndUpdate(id, user, {
             new: true,
-        }).exec();
+        });
     }
 
     async findAll(){
-        return this.userModel.find().exec();
+        return this.userModel.find();
     }
 
     async findOne(id: string){
-        return this.userModel.findById(id).exec();
+        return this.userModel.findById(id);
     }
 
     async deleteById(id: string){
-        return this.userModel.findByIdAndDelete(id).exec();
+        return this.userModel.findByIdAndDelete(id);
     }
 }

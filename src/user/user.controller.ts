@@ -1,38 +1,55 @@
-import { Body, Controller, Get, Param, Post, Put, Delete, ValidationPipe } from '@nestjs/common';
+import { 
+    Body, 
+    Controller, 
+    Get, 
+    Param, 
+    Post, 
+    Delete, 
+    ValidationPipe, 
+    UsePipes, 
+    Patch, 
+    HttpCode, 
+    HttpStatus} from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserDto } from './dto/user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 
-@Controller('/user')
+@UsePipes( new ValidationPipe({ transform: true }))
+@Controller('/users')
 export class UserController {
     constructor(private userService: UserService){}
 
-    // Controlador para crear usuarios nuevos
-    @Post('/create')
-    async create(@Body(new ValidationPipe()) createUser: UserDto){
-        return this.userService.create(createUser);
-    }
-
-    //Controlador para modificar usuarios
-    @Put('/update:id')
-    async update(@Param('id') id: string, @Body(new ValidationPipe()) User: UserDto){
-        return this.userService.update(id, User)
-    }
-
-    //Controlador para recuperar todos los usuarios existentes en la bd
-    @Get('users')
+    //Endpoint para recuperar todos los usuarios existentes
+    @Get('')
+    @HttpCode(HttpStatus.OK)
     async findAll(){
-        return this.userService.findAll();
+        return await this.userService.findAll();
     }
 
-    // Controlador para recuperar un user específico
-    @Get('/users:id')
+    // Endpoint para recuperar un user específico
+    @Get('/:id')
+    @HttpCode(HttpStatus.OK)
     async findOne(@Param('id') id: string){
-        return this.userService.findOne(id);
+        return await this.userService.findOne(id);
     }
 
-    // Controlador para eliminar un usuario específico
-    @Delete('/delete:id')
+    @Post('')
+    @HttpCode(HttpStatus.CREATED)
+    async create(@Body() createUser: CreateUserDto){
+        return await this.userService.create(createUser);
+    }
+
+    //Endpoint para modificar usuarios
+    @Patch('/:id')
+    @HttpCode(HttpStatus.OK)
+    async update(@Param('id') id: string, @Body() User: UpdateUserDto){
+        return await this.userService.update(id, User)
+    }
+
+    // Endpoint para eliminar un usuario específico
+    @Delete('/:id')
+    @HttpCode(HttpStatus.NO_CONTENT)
     async deleteById(@Param('id') id: string){
-        return this.userService.deleteById(id);
+        await this.userService.deleteById(id);
     }
 }
