@@ -43,9 +43,6 @@ describe('UserController', () => {
 
   describe('findAll', () => {
     it('should be call findAll of the service', () => {
-      const findAllSpy = jest
-        .spyOn(controller['userService'], 'findAll')
-        .mockResolvedValue([]);
       controller.findAll();
       expect(userServiceMock.findAll).toHaveBeenCalled();
     });
