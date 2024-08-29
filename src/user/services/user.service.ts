@@ -9,20 +9,20 @@ import { UpdateUserDto } from '../dtos/update-user.dto';
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async findAll() {
-    return this.userModel.find();
+  async findAll(): Promise<CreateUserDto[]> {
+    return await this.userModel.find();
   }
 
-  async findOne(id: string) {
-    return this.userModel.findById(id);
+  async findOne(id: string): Promise<CreateUserDto> {
+    return await this.userModel.findById(id);
   }
 
-  async create(user: CreateUserDto) {
-    return this.userModel.create(user);
+  async create(user: CreateUserDto): Promise<CreateUserDto> {
+    return await this.userModel.create(user);
   }
 
-  async update(id: string, user: UpdateUserDto) {
-    return this.userModel.findByIdAndUpdate(id, user, { new: true });
+  async update(id: string, user: UpdateUserDto): Promise<UpdateUserDto> {
+    return await this.userModel.findByIdAndUpdate(id, user, { new: true });
   }
 
   async deleteById(id: string) {

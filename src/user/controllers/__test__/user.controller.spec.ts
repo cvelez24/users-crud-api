@@ -1,9 +1,7 @@
 import { UserService } from './../../services/user.service';
 import { UserController } from '../user.controller';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserRole } from './../../schemas/user.schema';
-import { CreateUserDto } from './../../dtos/create-user.dto';
-import { UpdateUserDto } from './../../dtos/update-user.dto';
+import { USER_MOCK } from '../../services/__fixtures__/common';
 
 const userServiceMock = {
   findAll: jest.fn(),
@@ -13,14 +11,6 @@ const userServiceMock = {
   deleteById: jest.fn(),
 };
 
-const userDtoMock = {
-  name: 'Juan',
-  lastName: 'Velez',
-  email: 'jv@mail.com',
-  phone: '23425141414',
-  role: UserRole.GUEST,
-};
-
 describe('UserController', () => {
   let controller: UserController;
   const idMock = 'iuwefw8fgwgfwfbq';
@@ -28,11 +18,7 @@ describe('UserController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
-      providers: [
-        { provide: UserService, useValue: userServiceMock },
-        { provide: CreateUserDto, useValue: userDtoMock },
-        { provide: UpdateUserDto, useValue: userDtoMock },
-      ],
+      providers: [{ provide: UserService, useValue: userServiceMock }],
     }).compile();
     controller = module.get<UserController>(UserController);
   });
@@ -57,15 +43,15 @@ describe('UserController', () => {
 
   describe('create', () => {
     it('should be called create of the service', () => {
-      controller.create(userDtoMock);
-      expect(userServiceMock.create).toHaveBeenCalledWith(userDtoMock);
+      controller.create(USER_MOCK);
+      expect(userServiceMock.create).toHaveBeenCalledWith(USER_MOCK);
     });
   });
 
   describe('update', () => {
     it('should be called update from service', () => {
-      controller.update(idMock, userDtoMock);
-      expect(userServiceMock.update).toHaveBeenCalledWith(idMock, userDtoMock);
+      controller.update(idMock, USER_MOCK);
+      expect(userServiceMock.update).toHaveBeenCalledWith(idMock, USER_MOCK);
     });
   });
 

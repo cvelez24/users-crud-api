@@ -7,10 +7,9 @@ import {
   Delete,
   ValidationPipe,
   UsePipes,
-  Patch,
   HttpCode,
   HttpStatus,
-  Logger,
+  Put,
 } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
@@ -25,27 +24,24 @@ export class UserController {
   @Get()
   @HttpCode(HttpStatus.OK)
   async findAll() {
-    const users = await this.userService.findAll();
-    return users;
+    return await this.userService.findAll();
   }
 
   // Endpoint para recuperar un user específico
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
   async findOne(@Param('id') id: string) {
-    const user = this.userService.findOne(id);
-    return user;
+    return this.userService.findOne(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createUser: CreateUserDto) {
-    const newUser = this.userService.create(createUser);
-    return newUser;
+    return this.userService.create(createUser);
   }
 
   //Endpoint para modificar usuarios
-  @Patch('/:id')
+  @Put('/:id')
   @HttpCode(HttpStatus.OK)
   async update(@Param('id') id: string, @Body() User: UpdateUserDto) {
     return await this.userService.update(id, User);

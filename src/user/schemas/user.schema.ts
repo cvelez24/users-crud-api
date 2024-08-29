@@ -1,29 +1,29 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-// Define el rol del usuario
-export enum UserRole {
-  ADMIN = 'ADMIN',
-  COMMON_USER = 'COMMON_USER',
-  GUEST = 'GUEST',
-}
+import { Type } from 'class-transformer';
+import { IsString } from 'class-validator';
+
+export type UserRole = 'ADMIN' | 'COMMON_USER' | 'GUEST';
 
 @Schema({})
 export class User {
   @Prop({ required: true })
+  @IsString()
   name: string;
 
   @Prop()
+  @IsString()
   lastName: string;
 
   @Prop()
+  @IsString()
   email: string;
 
   @Prop()
+  @IsString()
   phone: string;
 
-  @Prop({
-    default: UserRole.GUEST,
-    required: true,
-  })
+  @Prop({ required: true })
+  @Type(() => String)
   role: UserRole;
 }
 
